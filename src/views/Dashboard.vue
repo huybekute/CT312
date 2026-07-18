@@ -43,7 +43,7 @@
       <div class="bg-[#2d3748] text-white px-6 py-4 flex flex-col md:flex-row justify-between items-start md:items-center shadow-md border-b border-slate-800">
         <div>
           <h1 class="text-lg font-black tracking-wider uppercase flex items-center gap-2">
-            PHÂN TÍCH DỮ LIỆU BỆNH LAO TOÀN CẦU GIAI ĐOẠN 2020 - 2026
+            PHÂN TÍCH DỮ LIỆU BỆNH LAO TOÀN CẦU GIAI ĐOẠN 2020 - 2024
           </h1>
         </div>
         <div class="text-[11px] font-mono text-slate-400 bg-[#1a202c] px-3 py-1 rounded border border-slate-700 mt-2 md:mt-0">
@@ -62,15 +62,15 @@
             <div class="text-xl font-black text-[#e53e3e] mt-1">{{ kpiTotals.cfrAvg }}%</div>
           </div>
           <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 text-center">
-            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-tight">Tỷ lệ mắc trung bình</div>
-            <div class="text-xl font-black text-indigo-600 mt-1">{{ kpiTotals.inc100kAvg }}</div>
+            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-tight">Tỷ lệ mắc trung bình </div>
+            <div class="text-xl font-black text-indigo-600 mt-1">{{ kpiTotals.inc100kAvg }} / 100 nghìn dân</div>
           </div>
           <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 text-center">
             <div class="text-[11px] font-bold text-slate-400 uppercase tracking-tight">Tổng thâm hụt tài chính</div>
             <div class="text-xl font-black text-amber-600 mt-1">${{ Number(kpiTotals.financialGap).toLocaleString('vi-VN') }}</div>
           </div>
         </section>
-        <section class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        <!-- <section class="grid grid-cols-1 lg:grid-cols-12 gap-5">
           <div class="lg:col-span-6 bg-white p-5 rounded-xl shadow-sm border border-slate-200">
             <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">BẢN ĐỒ PHÂN BỐ DỊCH TỄ TOÀN CẦU</h3>
             <div class="h-[280px]">
@@ -83,8 +83,60 @@
             <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Xu hướng tử vong do lao</h3>
             <apexchart type="line" height="280" :options="chart2Options" :series="chart2Series"></apexchart>
           </div>
+        </section> -->
+        <section class="grid grid-cols-1 gap-5">
+          <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+            <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">
+              BẢN ĐỒ PHÂN BỐ DỊCH TỄ TOÀN CẦU
+            </h3>
+
+            <div class="h-[320px]">
+              <v-chart
+                v-if="isMapReady"
+                class="w-full h-full"
+                :option="mapOptions"
+                autocall-resize
+              />
+
+              <div
+                v-else
+                class="h-full flex items-center justify-center text-xs text-slate-400"
+              >
+                đang tải
+              </div>
+            </div>
+          </div>
         </section>
 
+<!-- HÀNG 3: XU HƯỚNG TỬ VONG NẰM CẠNH TOP 10 -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+            <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">
+              Xu hướng tử vong do lao
+            </h3>
+
+            <apexchart
+              type="line"
+              height="300"
+              :options="chart2Options"
+              :series="chart2Series"
+            />
+          </div>
+
+          <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+            <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">
+              Top 10 quốc gia có tỷ lệ mắc lao cao nhất
+            </h3>
+
+
+            <apexchart
+              type="bar"
+              height="300"
+              :options="top10IncidenceOptions"
+              :series="top10IncidenceSeries"
+            />
+          </div>
+        </section>
         <section class="grid grid-cols-1 lg:grid-cols-2 gap-5">
           <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
             <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Tương quan đồng nhiễm HIV và tỷ lệ tử vong</h3>
@@ -852,10 +904,10 @@ const chart4Options = computed(() => ({
 
   plotOptions: {
     bar: {
-      borderRadius: 4,
+
       columnWidth: "55%",
       dataLabels: {
-        position: "top"
+        position: "center"
       }
     }
   },
@@ -1266,4 +1318,131 @@ onMounted(async () => {
     );
   }
 });
+
+const top10IncidenceData = computed(() => {
+  const countryMap = {};
+
+  filteredData.value.forEach((item) => {
+    const country = item.country;
+    const incidence = toNumber(item.e_inc_100k);
+
+    if (!country || incidence === null) {
+      return;
+    }
+
+    if (!countryMap[country]) {
+      countryMap[country] = {
+        total: 0,
+        count: 0,
+      };
+    }
+
+    countryMap[country].total += incidence;
+    countryMap[country].count++;
+  });
+
+  return Object.entries(countryMap)
+    .map(([country, values]) => ({
+      country,
+
+      // Chọn năm: chỉ có một giá trị của năm đó
+      // Không chọn năm: lấy trung bình giai đoạn 2020–2024
+      incidence: Number(
+        (values.total / values.count).toFixed(2)
+      ),
+    }))
+    .sort((a, b) => b.incidence - a.incidence)
+    .slice(0, 10);
+});
+const top10IncidenceSeries = computed(() => [
+  {
+    name: "Tỷ lệ mắc",
+    data: top10IncidenceData.value.map(
+      (item) => item.incidence
+    ),
+  },
+]);
+const top10IncidenceOptions = computed(() => ({
+  chart: {
+    type: "bar",
+    toolbar: {
+      show: false,
+    },
+  },
+
+  plotOptions: {
+    bar: {
+      horizontal: true,
+      borderRadius: 4,
+      barHeight: "65%",
+      distributed: true,
+      dataLabels: {
+        position: "top",
+      },
+    },
+  },
+
+dataLabels: {
+  enabled: true,
+  offsetX: -5,
+
+  textAnchor: "end",
+
+  style: {
+    fontSize: "11px",
+    fontWeight: "bold",
+    colors: ["#ffffff"],
+  },
+
+  formatter(value) {
+    return Number(value).toLocaleString("vi-VN", {
+      minimumFractionDigits: 1,
+      maximumFractionDigits: 1,
+    });
+  },
+},
+
+  xaxis: {
+    categories: top10IncidenceData.value.map(
+      (item) => item.country
+    ),
+
+    title: {
+      text: "Số ca mắc trên 100.000 dân",
+    },
+
+    labels: {
+      formatter(value) {
+        return Number(value).toLocaleString("vi-VN", {
+          maximumFractionDigits: 0,
+        });
+      },
+    },
+  },
+
+  yaxis: {
+    labels: {
+      maxWidth: 180,
+    },
+  },
+
+  grid: {
+    borderColor: "#e2e8f0",
+    strokeDashArray: 4,
+  },
+
+  legend: {
+    show: false,
+  },
+
+  tooltip: {
+    y: {
+      formatter(value) {
+        return `${Number(value).toLocaleString("vi-VN", {
+          maximumFractionDigits: 1,
+        })} ca/100.000 dân`;
+      },
+    },
+  },
+}));
 </script>
