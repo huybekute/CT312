@@ -907,7 +907,7 @@ const chart4Options = computed(() => ({
 
       columnWidth: "55%",
       dataLabels: {
-        position: "center"
+        position: "top"
       }
     }
   },
