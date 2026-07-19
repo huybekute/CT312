@@ -1,6 +1,6 @@
 <template>
   <div class="flex h-screen bg-[#f7f9fa] text-slate-800 font-sans antialiased overflow-hidden">
-    
+
     <!-- SIDEBAR BÊN TRÁI: BỘ LỌC ĐỘNG TỪ EXCEL -->
     <aside class="w-64 bg-[#2d3748] text-slate-300 flex flex-col shadow-xl z-10 select-none">
       <div class="p-5 bg-[#1a202c] border-b border-slate-700 flex items-center gap-3">
@@ -10,7 +10,8 @@
         <!-- 1. Bộ lọc Năm -->
         <div>
           <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">Năm (year)</label>
-          <select v-model="selectedYear" class="w-full bg-[#1a202c] border border-slate-700 rounded-lg p-2.5 text-xs font-medium text-slate-300 focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer">
+          <select v-model="selectedYear"
+            class="w-full bg-[#1a202c] border border-slate-700 rounded-lg p-2.5 text-xs font-medium text-slate-300 focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer">
             <option value="">-- Tất cả các năm ({{ years.length }} năm) --</option>
             <option v-for="y in years" :key="y" :value="y">Năm {{ y }}</option>
           </select>
@@ -19,7 +20,8 @@
         <!-- 2. Bộ lọc Khu vực -->
         <div>
           <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">Khu vực (region)</label>
-          <select v-model="selectedRegion" class="w-full bg-[#1a202c] border border-slate-700 rounded-lg p-2.5 text-xs font-medium text-slate-300 focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer">
+          <select v-model="selectedRegion"
+            class="w-full bg-[#1a202c] border border-slate-700 rounded-lg p-2.5 text-xs font-medium text-slate-300 focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer">
             <option value="">-- Tất cả khu vực ({{ regions.length }}) --</option>
             <option v-for="r in regions" :key="r" :value="r">Khu vực {{ r }}</option>
           </select>
@@ -27,8 +29,10 @@
 
         <!-- 3. Bộ lọc Quốc gia -->
         <div>
-          <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">Quốc gia (country)</label>
-          <select v-model="selectedCountry" class="w-full bg-[#1a202c] border border-slate-700 rounded-lg p-2.5 text-xs font-medium text-slate-300 focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer">
+          <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">Quốc gia
+            (country)</label>
+          <select v-model="selectedCountry"
+            class="w-full bg-[#1a202c] border border-slate-700 rounded-lg p-2.5 text-xs font-medium text-slate-300 focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer">
             <option value="">-- Tất cả quốc gia ({{ countries.length }}) --</option>
             <option v-for="c in countries" :key="c" :value="c">{{ c }}</option>
           </select>
@@ -38,15 +42,17 @@
 
     <!-- KHU VỰC HIỂN THỊ NỘI DUNG CHÍNH (CANVAS) -->
     <main class="flex-1 flex flex-col overflow-y-auto">
-      
+
       <!-- TOP BANNER BAR -->
-      <div class="bg-[#2d3748] text-white px-6 py-4 flex flex-col md:flex-row justify-between items-start md:items-center shadow-md border-b border-slate-800">
+      <div
+        class="bg-[#2d3748] text-white px-6 py-4 flex flex-col md:flex-row justify-between items-start md:items-center shadow-md border-b border-slate-800">
         <div>
           <h1 class="text-lg font-black tracking-wider uppercase flex items-center gap-2">
             PHÂN TÍCH DỮ LIỆU BỆNH LAO TOÀN CẦU GIAI ĐOẠN 2020 - 2024
           </h1>
         </div>
-        <div class="text-[11px] font-mono text-slate-400 bg-[#1a202c] px-3 py-1 rounded border border-slate-700 mt-2 md:mt-0">
+        <div
+          class="text-[11px] font-mono text-slate-400 bg-[#1a202c] px-3 py-1 rounded border border-slate-700 mt-2 md:mt-0">
           Dữ liệu: {{ filteredData.length }} / {{ fullData.length }} dòng
         </div>
       </div>
@@ -55,7 +61,8 @@
         <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 text-center">
             <div class="text-[11px] font-bold text-slate-400 uppercase tracking-tight">Tổng ca mắc</div>
-            <div class="text-xl font-black text-[#2b6cb0] mt-1">{{ Number(kpiTotals.incidence).toLocaleString('vi-VN') }}</div>
+            <div class="text-xl font-black text-[#2b6cb0] mt-1">{{ Number(kpiTotals.incidence).toLocaleString('vi-VN')
+              }}</div>
           </div>
           <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 text-center">
             <div class="text-[11px] font-bold text-slate-400 uppercase tracking-tight">Tỷ lệ tử vong trung bình</div>
@@ -67,7 +74,8 @@
           </div>
           <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 text-center">
             <div class="text-[11px] font-bold text-slate-400 uppercase tracking-tight">Tổng thâm hụt tài chính</div>
-            <div class="text-xl font-black text-amber-600 mt-1">${{ Number(kpiTotals.financialGap).toLocaleString('vi-VN') }}</div>
+            <div class="text-xl font-black text-amber-600 mt-1">${{
+              Number(kpiTotals.financialGap).toLocaleString('vi-VN') }}</div>
           </div>
         </section>
         <!-- <section class="grid grid-cols-1 lg:grid-cols-12 gap-5">
@@ -91,36 +99,23 @@
             </h3>
 
             <div class="h-[320px]">
-              <v-chart
-                v-if="isMapReady"
-                class="w-full h-full"
-                :option="mapOptions"
-                autocall-resize
-              />
+              <v-chart v-if="isMapReady" class="w-full h-full" :option="mapOptions" autocall-resize />
 
-              <div
-                v-else
-                class="h-full flex items-center justify-center text-xs text-slate-400"
-              >
+              <div v-else class="h-full flex items-center justify-center text-xs text-slate-400">
                 đang tải
               </div>
             </div>
           </div>
         </section>
 
-<!-- HÀNG 3: XU HƯỚNG TỬ VONG NẰM CẠNH TOP 10 -->
+        <!-- HÀNG 3: XU HƯỚNG TỬ VONG NẰM CẠNH TOP 10 -->
         <section class="grid grid-cols-1 lg:grid-cols-2 gap-5">
           <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
             <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">
               Xu hướng tử vong do lao
             </h3>
 
-            <apexchart
-              type="line"
-              height="300"
-              :options="chart2Options"
-              :series="chart2Series"
-            />
+            <apexchart type="line" height="300" :options="chart2Options" :series="chart2Series" />
           </div>
 
           <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
@@ -129,44 +124,33 @@
             </h3>
 
 
-            <apexchart
-              type="bar"
-              height="300"
-              :options="top10IncidenceOptions"
-              :series="top10IncidenceSeries"
-            />
+            <apexchart type="bar" height="300" :options="top10IncidenceOptions" :series="top10IncidenceSeries" />
           </div>
         </section>
         <section class="grid grid-cols-1 lg:grid-cols-2 gap-5">
           <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-            <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Tương quan đồng nhiễm HIV và tỷ lệ tử vong</h3>
-          <apexchart
-            type="bubble"
-            height="250"
-            :options="chart3Options"
-            :series="chart3Series"
-          />
+            <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Tương quan đồng nhiễm HIV và tỷ
+              lệ tử vong</h3>
+            <apexchart type="bubble" height="250" :options="chart3Options" :series="chart3Series" />
           </div>
 
           <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-            <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1"> Đánh giá khoảng trống tài chính y tế toàn cầu</h3>
-            <apexchart
-              type="bar"
-              height="250"
-              :options="chart4Options"
-              :series="chart4Series"
-            />
+            <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1"> Đánh giá khoảng trống tài chính
+              y tế toàn cầu</h3>
+            <apexchart type="bar" height="250" :options="chart4Options" :series="chart4Series" />
           </div>
         </section>
 
         <section class="grid grid-cols-1 lg:grid-cols-12 gap-5">
           <div class="lg:col-span-7 bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-            <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Kiểm định khoảng tin cậy số ca mắc</h3>
+            <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Kiểm định khoảng tin cậy số ca
+              mắc</h3>
             <apexchart type="line" height="250" :options="chart5Options" :series="chart5Series"></apexchart>
           </div>
 
           <div class="lg:col-span-5 bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-            <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Phân nhóm năng lực tầm soát quốc gia</h3>
+            <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Phân nhóm năng lực tầm soát quốc
+              gia</h3>
             <apexchart type="bubble" height="250" :options="chart6Options" :series="chart6Series"></apexchart>
           </div>
         </section>
@@ -538,8 +522,8 @@ const mapOptions = computed(() => {
       formatter: (params) => {
         const value =
           params.value === undefined ||
-          params.value === null ||
-          Number.isNaN(params.value)
+            params.value === null ||
+            Number.isNaN(params.value)
             ? 'Không có dữ liệu'
             : `${Number(params.value).toFixed(2)} ca/100.000 dân`;
 
@@ -1382,25 +1366,25 @@ const top10IncidenceOptions = computed(() => ({
     },
   },
 
-dataLabels: {
-  enabled: true,
-  offsetX: -5,
+  dataLabels: {
+    enabled: true,
+    offsetX: -5,
 
-  textAnchor: "end",
+    textAnchor: "end",
 
-  style: {
-    fontSize: "11px",
-    fontWeight: "bold",
-    colors: ["#ffffff"],
+    style: {
+      fontSize: "11px",
+      fontWeight: "bold",
+      colors: ["#ffffff"],
+    },
+
+    formatter(value) {
+      return Number(value).toLocaleString("vi-VN", {
+        minimumFractionDigits: 1,
+        maximumFractionDigits: 1,
+      });
+    },
   },
-
-  formatter(value) {
-    return Number(value).toLocaleString("vi-VN", {
-      minimumFractionDigits: 1,
-      maximumFractionDigits: 1,
-    });
-  },
-},
 
   xaxis: {
     categories: top10IncidenceData.value.map(

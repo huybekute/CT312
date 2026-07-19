@@ -1,38 +1,23 @@
-# CT312
+# Hướng dẫn sử dụng
 
-This template should help get you started developing with Vue 3 in Vite.
+## Chạy bản trực tuyến
 
-## Recommended IDE Setup
+Phiên bản triển khai của dự án có thể được truy cập tại:
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+> **Vercel:** https://ct-312.vercel.app/
 
-## Recommended Browser Setup
+Chỉ cần mở đường dẫn trên bằng trình duyệt để sử dụng toàn bộ chức năng của dashboard.
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+---
 
-## Customize configuration
+## Chạy bản cục bộ
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+Để chạy bản build, sử dụng máy chủ xem trước của Vite:
 
-## Project Setup
-
-```sh
-npm install
+```bash
+npm run preview
 ```
 
-### Compile and Hot-Reload for Development
+Sau khi thực thi, Vite sẽ hiển thị địa chỉ truy cậ
 
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
+Mở trình duyệt và truy cập địa chỉ trên để sử dụng phiên bản đã build.
